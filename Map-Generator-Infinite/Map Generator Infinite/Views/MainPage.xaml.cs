@@ -14,5 +14,33 @@ namespace Map_Generator_Infinite.Views
         {
             InitializeComponent();
         }
+
+        private string oldXOffsetText = "";
+        private void XOffsetTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        {
+            int temp;
+            if (int.TryParse(sender.Text, out temp) || sender.Text == "")
+                oldXOffsetText = sender.Text;
+            else
+            {
+                int pos = sender.SelectionStart - 1;
+                sender.Text = oldXOffsetText;
+                sender.SelectionStart = pos;
+            }
+        }
+
+        private string oldYOffsetText = "";
+        private void YOffsetTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        {
+            int temp;
+            if (int.TryParse(sender.Text, out temp) || sender.Text == "")
+                oldYOffsetText = sender.Text;
+            else
+            {
+                int pos = sender.SelectionStart - 1;
+                sender.Text = oldYOffsetText;
+                sender.SelectionStart = pos;
+            }
+        }
     }
 }

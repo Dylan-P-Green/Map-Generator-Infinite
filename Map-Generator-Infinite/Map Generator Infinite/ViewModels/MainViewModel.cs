@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows.Input;
 using Map_Generator_Infinite.Helpers;
+using Map_Generator_Infinite.Models.Generators;
 using Map_Generator_Infinite.Services;
 using Map_Generator_Infinite.Views;
 using PixelEditorLib;
@@ -16,6 +19,20 @@ namespace Map_Generator_Infinite.ViewModels
 
         }
 
+
+        private string _mapSeed;
+
+        public string MapSeed
+        {
+            get
+            {
+                return _mapSeed;
+            }
+            set
+            {
+                _mapSeed = value;
+            }
+        }
 
         private int _xOffset = 0;
 
@@ -59,6 +76,12 @@ namespace Map_Generator_Infinite.ViewModels
             }
         }
 
+        //List of all functioning generators
+        private List<Generator> _generatorList = new List<Generator> { new RandomPixelGenerator() };
+
+        //Array of pixels used to generate map
+        private PixelRGBA[,] array;
+
         private ICommand _generateImageCommand;
 
         public ICommand GenerateImageCommand
@@ -71,8 +94,30 @@ namespace Map_Generator_Infinite.ViewModels
                     _generateImageCommand = new RelayCommand(
                         async () =>
                         {
-                            PixelRGBA[,] array = PixelManager.GeneratePixelCanvas(1024, 1024);
+                            //Create canvas out of 2D pixels
+                            array = PixelManager.GeneratePixelCanvas(1024, 1024);
+                            int integerSeed = 0; //Seed used in calculations
+
+                            if (_mapSeed == null) //Has the seed been set?
+                            {
+                                //If not, generate one
+                                Random r = new Random(); //TODO: Check if seeds are genrated different each run
+                                integerSeed = r.Next();
+                            }
+                            else
+                            {
+                                foreach (char c in _mapSeed)
+                                    integerSeed += (int)c; //add together unicode values in string
+                            }
+
+                            //Run though each generator and apply it
+                            foreach (Generator g in _generatorList)
+                            {
+                                if (g.IsEnabled) array = g.Apply(array, integerSeed);
+                            }
+
                             SoftwareBitmapSource source = new SoftwareBitmapSource();
+                            
                             await source.SetBitmapAsync(PixelManager.SavePixelArray(array));
                             Set(ref _mapSource, source, "MapSource");
                         });

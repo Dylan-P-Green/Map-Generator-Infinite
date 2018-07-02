@@ -11,7 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="224"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Style="{StaticResource PageTitleStyle}" Grid.Row="0" HorizontalAlignment="Left" Margin="4,0" x:Uid="Main_Title"/>
@@ -25,7 +25,7 @@
         <Image Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{x:Bind ViewModel.MapSource, Mode=OneWay}"/>
         <Grid Grid.Row="2" Margin="8">
             <StackPanel>
-                <TextBox x:Uid="Main_SeedTextBox" Width="256" Margin="4"/>
+                <TextBox x:Uid="Main_SeedTextBox" Width="256" Margin="4" Text="{x:Bind ViewModel.MapSeed, Mode=TwoWay}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBox x:Uid="Main_XTextBox" Width="128" Margin="4" InputScope="Number" TextChanging="XOffsetTextBox_TextChanging" Text="{x:Bind ViewModel.XOffset, Mode=TwoWay}"/>
                     <TextBox x:Uid="Main_YTextBox" Width="128" Margin="4" InputScope="Number" TextChanging="YOffsetTextBox_TextChanging" Text="{x:Bind ViewModel.YOffset, Mode=TwoWay}"/>

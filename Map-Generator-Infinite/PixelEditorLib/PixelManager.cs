@@ -27,9 +27,11 @@ namespace PixelEditorLib
             int length = array.GetLength(0);
             int width = array.GetLength(1); //Assuming the number of elements is consistant
 
-
+            //Create base image
             SoftwareBitmap image = new SoftwareBitmap(BitmapPixelFormat.Bgra8, length, width, BitmapAlphaMode.Premultiplied);
 
+
+            //Access raw image and write data from the 2D processed pixel array
             using (BitmapBuffer buffer = image.LockBuffer(BitmapBufferAccessMode.Write))
             {
                 using (IMemoryBufferReference reference = buffer.CreateReference())
@@ -57,6 +59,7 @@ namespace PixelEditorLib
             return image;
         }
 
+        //Create initial pixel structures in the format of a 2D image
         public static PixelRGBA[,] GeneratePixelCanvas(int width, int height)
         {
             PixelRGBA[,] canvas = new PixelRGBA[width,height];

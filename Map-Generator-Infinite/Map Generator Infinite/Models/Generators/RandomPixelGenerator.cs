@@ -20,7 +20,7 @@ namespace Map_Generator_Infinite.Models.Generators
 
 
 
-        public override PixelRGBA[,] Apply(PixelRGBA[,] pixels, int seed)
+        public override PixelRGBA[,] Apply(PixelRGBA[,] pixels, int seed, int xOffset, int yOffset)
         {
             r = new Random(seed); //Use seed from main form
 
@@ -32,7 +32,7 @@ namespace Map_Generator_Infinite.Models.Generators
                     pixels[x,y].R = (byte)r.Next(0, 255);
                     pixels[x,y].G = (byte)r.Next(0, 255);
                     pixels[x,y].B = (byte)r.Next(0, 255);
-                    pixels[x,y].A = (byte)r.Next(0, 255);
+                    pixels[x,y].A = 255; //Leave the image solid with no transparency
                 }
             }
 

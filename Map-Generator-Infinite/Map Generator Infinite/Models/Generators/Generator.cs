@@ -10,10 +10,11 @@ namespace Map_Generator_Infinite.Models.Generators
     public abstract class Generator
     {
         public bool IsEnabled = false;
+        public string title;
         public string author;
         public string description;
 
-        public abstract PixelRGBA[,] Apply(PixelRGBA[,] pixels, int seed);
+        public abstract PixelRGBA[,] Apply(PixelRGBA[,] pixels, int seed, int xOffset, int yOffset);
 
         public abstract void ShowSettings();
         public abstract void Submit();

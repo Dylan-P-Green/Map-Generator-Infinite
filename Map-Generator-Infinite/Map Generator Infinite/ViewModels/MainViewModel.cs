@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 using Map_Generator_Infinite.Helpers;
@@ -48,6 +49,20 @@ namespace Map_Generator_Infinite.ViewModels
             }
         }
 
+         bool _listIsOpen = false;
+
+        public bool ListIsOpen
+        {
+            get
+            {
+                return _listIsOpen;
+            }
+            set
+            {
+                _listIsOpen = value;
+            }
+        }
+
         private int _yOffset = 0;
 
         public int YOffset
@@ -77,7 +92,20 @@ namespace Map_Generator_Infinite.ViewModels
         }
 
         //List of all functioning generators
-        private List<Generator> _generatorList = new List<Generator> { new RandomPixelGenerator() };
+        private ObservableCollection<Generator> _generatorList = new ObservableCollection<Generator> { new RandomPixelGenerator() };
+        public ObservableCollection<Generator> GeneratorList
+        {
+            get
+            {
+                return _generatorList;
+            }
+            set
+            {
+                _generatorList = value;
+            }
+        }
+
+
 
         //Array of pixels used to generate map
         private PixelRGBA[,] array;
@@ -101,7 +129,7 @@ namespace Map_Generator_Infinite.ViewModels
                             if (_mapSeed == null) //Has the seed been set?
                             {
                                 //If not, generate one
-                                Random r = new Random(); //TODO: Check if seeds are genrated different each run
+                                Random r = new Random(DateTime.Now.Millisecond); //TODO: Check if seeds are genrated different each run
                                 integerSeed = r.Next();
                             }
                             else
@@ -113,7 +141,7 @@ namespace Map_Generator_Infinite.ViewModels
                             //Run though each generator and apply it
                             foreach (Generator g in _generatorList)
                             {
-                                if (g.IsEnabled) array = g.Apply(array, integerSeed);
+                                if (g.IsEnabled) array = g.Apply(array, integerSeed, XOffset, YOffset);
                             }
 
                             SoftwareBitmapSource source = new SoftwareBitmapSource();
@@ -125,6 +153,27 @@ namespace Map_Generator_Infinite.ViewModels
                 return _generateImageCommand;
             }
         }
+
+        private ICommand _toggleListPane;
+
+        public ICommand ToggleListPane
+        {
+            get
+            {
+
+                if (_toggleListPane == null)
+                {
+                    _toggleListPane = new RelayCommand(
+                        () =>
+                        {
+                            Set(ref _listIsOpen, !ListIsOpen, "ListIsOpen");
+                        });
+                }
+                return _toggleListPane;
+            }
+        }
+
+
 
         private ICommand _navigateToSettingsCommand;
 

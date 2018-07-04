@@ -4,35 +4,74 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:gen="using:Map_Generator_Infinite.Models.Generators"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
-    <Grid
+    <SplitView PanePlacement="Right" IsPaneOpen="{x:Bind ViewModel.ListIsOpen, Mode=OneWay}" OpenPaneLength="300">
+        <Grid
         x:Name="ContentArea">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
 
-        <TextBlock Style="{StaticResource PageTitleStyle}" Grid.Row="0" HorizontalAlignment="Left" Margin="4,0" x:Uid="Main_Title"/>
-
-        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch">
-            <Button Command="{x:Bind ViewModel.NavigateToSettings}">
-                <SymbolIcon Symbol="Setting"/>
-            </Button>
-        </StackPanel>
-
-        <Image Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{x:Bind ViewModel.MapSource, Mode=OneWay}"/>
-        <Grid Grid.Row="2" Margin="8">
-            <StackPanel>
-                <TextBox x:Uid="Main_SeedTextBox" Width="256" Margin="4" Text="{x:Bind ViewModel.MapSeed, Mode=TwoWay}"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBox x:Uid="Main_XTextBox" Width="128" Margin="4" InputScope="Number" TextChanging="XOffsetTextBox_TextChanging" Text="{x:Bind ViewModel.XOffset, Mode=TwoWay}"/>
-                    <TextBox x:Uid="Main_YTextBox" Width="128" Margin="4" InputScope="Number" TextChanging="YOffsetTextBox_TextChanging" Text="{x:Bind ViewModel.YOffset, Mode=TwoWay}"/>
-                    
-                </StackPanel>
-                <Button x:Uid="Main_GenerateButton" HorizontalAlignment="Center" Margin="4" Command="{x:Bind ViewModel.GenerateImageCommand}"/>
+            <TextBlock Style="{StaticResource PageTitleStyle}" Grid.Row="0" HorizontalAlignment="Center" Margin="4,0" x:Uid="Main_Title"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+                <Button Command="{x:Bind ViewModel.NavigateToSettings}">
+                    <SymbolIcon Symbol="Setting"/>
+                </Button>
+                <Button Command="{x:Bind ViewModel.ToggleListPane}">
+                    <SymbolIcon Symbol="List"/>
+                </Button>
             </StackPanel>
+
+            <Image Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{x:Bind ViewModel.MapSource, Mode=OneWay}"/>
+            <Grid Grid.Row="2" Margin="8">
+                <StackPanel>
+                    <TextBox x:Uid="Main_SeedTextBox" Width="256" Margin="4" Text="{x:Bind ViewModel.MapSeed, Mode=TwoWay}"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBox x:Uid="Main_XTextBox" Width="128" Margin="4" InputScope="Number" TextChanging="XOffsetTextBox_TextChanging" Text="{x:Bind ViewModel.XOffset, Mode=TwoWay}"/>
+                        <TextBox x:Uid="Main_YTextBox" Width="128" Margin="4" InputScope="Number" TextChanging="YOffsetTextBox_TextChanging" Text="{x:Bind ViewModel.YOffset, Mode=TwoWay}"/>
+
+                    </StackPanel>
+                    <Button x:Uid="Main_GenerateButton" HorizontalAlignment="Center" Margin="4" Command="{x:Bind ViewModel.GenerateImageCommand}"/>
+                </StackPanel>
+            </Grid>
         </Grid>
-    </Grid>
+        <SplitView.Pane>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Style="{StaticResource PageTitleStyle}" HorizontalAlignment="Center" Margin="4,0" x:Uid="Main_Generators"/>
+
+                <ScrollViewer Grid.Row="1">
+                    <ListView ItemsSource="{x:Bind ViewModel.GeneratorList, Mode=TwoWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="gen:Generator">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox IsChecked="{x:Bind IsEnabled, Mode=TwoWay}" VerticalAlignment="Center"/>
+
+                                    <StackPanel Orientation="Vertical" Grid.Column="1">
+                                        <TextBlock Text="{x:Bind title, Mode=OneTime}" FontWeight="Bold"/>
+                                        <TextBlock Text="{x:Bind author, Mode=OneTime}" FontWeight="Light"/>
+                                        <TextBlock Text="{x:Bind description, Mode=OneTime}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
+            </Grid>
+        </SplitView.Pane>
+    </SplitView>
 </Page>

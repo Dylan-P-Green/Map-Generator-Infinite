@@ -236,4 +236,8 @@ Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Ma
     <value>Back</value>
     <comment>Return button to main</comment>
   </data>
+  <data name="Main_Generators.Text" xml:space="preserve">
+    <value>Generators</value>
+    <comment>Header for list of filters</comment>
+  </data>
 </root>

@@ -12,9 +12,10 @@ namespace Map_Generator_Infinite.Models.Generators
         Random r; //For genetating pixels
         public RandomPixelGenerator()
         {
+            title = "Random Pixel Generator";
             author = "Dylan Green";
             description = "A test Generator for Map Generator Infinite";
-            IsEnabled = true;
+            IsEnabled = false;
         }
 
 

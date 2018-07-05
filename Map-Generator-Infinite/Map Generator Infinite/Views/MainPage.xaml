@@ -7,7 +7,7 @@
     xmlns:gen="using:Map_Generator_Infinite.Models.Generators"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
-    <SplitView PanePlacement="Right" IsPaneOpen="{x:Bind ViewModel.ListIsOpen, Mode=OneWay}" OpenPaneLength="300">
+    <SplitView PanePlacement="Right" IsPaneOpen="{x:Bind ViewModel.ListIsOpen, Mode=TwoWay}" OpenPaneLength="350">
         <Grid
         x:Name="ContentArea">
             <Grid.RowDefinitions>
@@ -16,8 +16,8 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Style="{StaticResource PageTitleStyle}" Grid.Row="0" HorizontalAlignment="Center" Margin="4,0" x:Uid="Main_Title"/>
-            <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+            <TextBlock Style="{StaticResource PageTitleStyle}" Grid.Row="0" HorizontalAlignment="Center" x:Uid="Main_Title" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Top"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1">
                 <Button Command="{x:Bind ViewModel.NavigateToSettings}">
                     <SymbolIcon Symbol="Setting"/>
                 </Button>
@@ -26,8 +26,8 @@
                 </Button>
             </StackPanel>
 
-            <Image Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{x:Bind ViewModel.MapSource, Mode=OneWay}"/>
-            <Grid Grid.Row="2" Margin="8">
+            <Image Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{x:Bind ViewModel.MapSource, Mode=OneWay}" Grid.Column="1"/>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel>
                     <TextBox x:Uid="Main_SeedTextBox" Width="256" Margin="4" Text="{x:Bind ViewModel.MapSeed, Mode=TwoWay}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -47,24 +47,24 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Style="{StaticResource PageTitleStyle}" HorizontalAlignment="Center" Margin="4,0" x:Uid="Main_Generators"/>
+                <TextBlock Grid.Row="0" Style="{StaticResource PageTitleStyle}" HorizontalAlignment="Center" Margin="0,4" x:Uid="Main_Generators"/>
 
                 <ScrollViewer Grid.Row="1">
-                    <ListView ItemsSource="{x:Bind ViewModel.GeneratorList, Mode=TwoWay}">
+                    <ListView ItemsSource="{x:Bind ViewModel.GeneratorList, Mode=TwoWay}" SelectionMode="None" IsItemClickEnabled="True">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="gen:Generator">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="32"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox IsChecked="{x:Bind IsEnabled, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <CheckBox IsChecked="{x:Bind IsEnabled, Mode=TwoWay}" VerticalAlignment="Center" Width="32"/>
 
                                     <StackPanel Orientation="Vertical" Grid.Column="1">
-                                        <TextBlock Text="{x:Bind title, Mode=OneTime}" FontWeight="Bold"/>
-                                        <TextBlock Text="{x:Bind author, Mode=OneTime}" FontWeight="Light"/>
-                                        <TextBlock Text="{x:Bind description, Mode=OneTime}"/>
+                                        <TextBlock Text="{x:Bind title, Mode=OneTime}" HorizontalAlignment="Left" FontWeight="Bold"/>
+                                        <TextBlock Text="{x:Bind author, Mode=OneTime}" HorizontalAlignment="Left" FontWeight="Light"/>
+                                        <TextBlock Text="{x:Bind description, Mode=OneTime}" HorizontalAlignment="Left" />
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>

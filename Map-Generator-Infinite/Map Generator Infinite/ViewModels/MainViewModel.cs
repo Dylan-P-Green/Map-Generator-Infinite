@@ -92,7 +92,7 @@ namespace Map_Generator_Infinite.ViewModels
         }
 
         //List of all functioning generators
-        private ObservableCollection<Generator> _generatorList = new ObservableCollection<Generator> { new RandomPixelGenerator() };
+        private ObservableCollection<Generator> _generatorList = new ObservableCollection<Generator> { new RandomPixelGenerator(), new TerrainTestGenerator() };
         public ObservableCollection<Generator> GeneratorList
         {
             get
